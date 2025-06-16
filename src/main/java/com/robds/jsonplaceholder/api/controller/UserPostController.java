@@ -29,8 +29,8 @@ public class UserPostController {
 	}
 	
 	@GetMapping("user/post/{id}")
-	public ResponseEntity<UserPost> getPostByUser(@PathVariable Long id) {
-		return null;
+	public ResponseEntity<UserPost> getPostByUser(@PathVariable Long id) throws IOException, InterruptedException {
+		return ResponseEntity.ok().body(userPostService.getPostByUser(id));
 	}
 	
 

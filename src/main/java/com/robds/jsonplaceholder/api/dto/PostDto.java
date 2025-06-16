@@ -2,17 +2,11 @@ package com.robds.jsonplaceholder.api.dto;
 
 public class PostDto {
 	
-	private Long userId;
 	private Long id;
 	private String title;
 	private String body;
 	
-	public Long getUserId() {
-		return userId;
-	}
-	public void setUserId(Long userId) {
-		this.userId = userId;
-	}
+
 	public Long getId() {
 		return id;
 	}

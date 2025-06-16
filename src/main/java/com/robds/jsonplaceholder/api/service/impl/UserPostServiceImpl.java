@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.robds.jsonplaceholder.api.client.ApiClient;
+import com.robds.jsonplaceholder.api.dto.PostDto;
 import com.robds.jsonplaceholder.api.dto.UserDto;
 import com.robds.jsonplaceholder.api.model.UserPost;
 import com.robds.jsonplaceholder.api.service.UserPostService;
@@ -41,9 +42,29 @@ public class UserPostServiceImpl implements UserPostService{
 	}
 
 	@Override
-	public UserPost getPostByUser(Long id) {
-		// TODO Auto-generated method stub
-		return null;
+	public UserPost getPostByUser(Long id) throws IOException, InterruptedException {
+		UserPost response = new UserPost();
+		List<PostDto> posts = new ArrayList<>();
+		ObjectMapper mapper = new ObjectMapper();
+		HttpResponse<String> postApi = client.connectPotsUserById(id);
+		JsonNode root = mapper.readTree(postApi.body());
+		
+		UserDto user = findUser(id);
+		
+		for(JsonNode node: root) {
+			PostDto post = new PostDto();
+			post.setId(node.get("id").asLong());
+			post.setTitle(node.get("title").asText());
+			post.setBody(node.get("body").asText());
+			posts.add(post);
+		}
+		
+		response.setName(user.getName());
+		response.setEmail(user.getEmail());
+		response.setPosts(posts);
+		
+		
+		return response;
 	}
 	
 	
